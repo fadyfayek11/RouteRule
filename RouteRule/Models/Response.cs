@@ -9,3 +9,9 @@ public enum Status
     Warning,
     Error
 }
+public enum FileStatus
+{
+    AppendDone,
+    FileExist,
+    Error
+}

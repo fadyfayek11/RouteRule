@@ -17,11 +17,13 @@ public class RuleRepository : IRuleRepository
         _ruleHelper = ruleHelper;
     }
 
-    public async Task<bool> AddRule(Rule rule)
+    public async Task<FileStatus> AddRule(Rule rule)
     {
-        if (await _ruleHelper.IsRuleExist(rule, _configuration["ConfigurationFilePath"])) return false;
+        if (await _ruleHelper.IsRuleExist(rule, _configuration["ConfigurationFilePath"])) return FileStatus.FileExist; // in case the same rule exists.
 
-        return await _configFile.AppendRuleToConfigFile(rule, _configuration["ConfigurationFilePath"]);
+        return await _configFile.AppendRuleToConfigFile(rule, _configuration["ConfigurationFilePath"])
+            ? FileStatus.AppendDone
+            : FileStatus.Error;
     }
 
     public async Task<bool> RemoveRule(Rule rule)

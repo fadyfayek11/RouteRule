@@ -16,9 +16,9 @@ namespace RouteRule
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IConfigRepository, ConfigRepository>();
-            builder.Services.AddScoped<IRuleRepository, RuleRepository>();
-            builder.Services.AddScoped<IRuleHelperRepository, RuleHelperRepository>();
+            builder.Services.AddTransient<IConfigRepository, ConfigRepository>();
+            builder.Services.AddSingleton<IRuleRepository, RuleRepository>();
+            builder.Services.AddSingleton<IRuleHelperRepository, RuleHelperRepository>();
 
             var app = builder.Build();
 

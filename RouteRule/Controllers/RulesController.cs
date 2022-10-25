@@ -31,12 +31,12 @@ namespace RouteRule.Controllers
         [ProducesResponseType(typeof(Response),(int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add([FromBody] Rule rule)
         {
-            var addingSuccess = await _ruleRepository.AddRule(rule);
-            if (addingSuccess)
+            var addingStatus = await _ruleRepository.AddRule(rule);
+            if (addingStatus == FileStatus.AppendDone)
             {
                 return new OkObjectResult(new Response(Status.Success,"Adding new rule done successfully"));
             }
-            return new OkObjectResult(new Response(Status.Error, "Error while adding new rule, Or the same rule is already exist"));
+            return new OkObjectResult(new Response(Status.Error, addingStatus == FileStatus.Error ? "Error while adding new rule" : "The same rule is already exist"));
         }
     }
 }

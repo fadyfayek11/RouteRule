@@ -12,17 +12,13 @@ public class RuleHelperRepository : IRuleHelperRepository
         _configFile = configFile;
     }
 
-    public RuleHelperRepository()
-    {
-        
-    }
     public async Task<bool> IsRuleExist(Rule rule, string filePath)
     {
         var rules = await _configFile.MapXmlToRules(filePath);
-        return rules.Any(x=>
-            x.name.Equals(rule.Name) &&
-            x.conditions.add.pattern.Equals(rule.Pattern) &&
-            x.action.url.Equals(rule.Url));
+        return  rules.Any(x=>
+            x.name == rule.Name &&
+            x.conditions.add.pattern == rule.Pattern &&
+            x.action.url.ToString().Split('/')[0] == rule.Url);
     }
 
     public string GenerateXmlRule(Rule rule)
