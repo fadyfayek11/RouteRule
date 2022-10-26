@@ -38,6 +38,18 @@ namespace RouteRule.Controllers
             }
             return new OkObjectResult(new Response(Status.Error, addingStatus == FileStatus.Error ? "Error while adding new rule" : "The same rule is already exist"));
         }
+        
+        [HttpDelete(Name = "DeleteRule")]
+        [ProducesResponseType(typeof(Response),(int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Delete([FromBody] Rule rule)
+        {
+            var removingStatus = await _ruleRepository.RemoveRule(rule);
+            if (removingStatus)
+            {
+                return new OkObjectResult(new Response(Status.Success,"Removing rule done successfully"));
+            }
+            return new OkObjectResult(new Response(Status.Error, "Can't remove the rule"));
+        }
 
 
     }

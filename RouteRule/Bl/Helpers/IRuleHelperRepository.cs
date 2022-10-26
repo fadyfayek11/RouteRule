@@ -4,7 +4,8 @@ namespace RouteRule.Bl.Helpers;
 
 public interface IRuleHelperRepository
 {
-    Task<bool> IsRuleExist(Rule rule, string filePath);
+    bool IsRuleExist(Rule rule, List<configurationSystemwebServerRewriteRule> rules);
+    bool IsRuleExist(Rule rule, IList<Rule> getAllRules);
     string GenerateXmlRule(Rule rule);
 }
 

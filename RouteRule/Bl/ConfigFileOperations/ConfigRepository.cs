@@ -7,7 +7,12 @@ namespace RouteRule.Bl.ConfigFileOperations;
 
 public class ConfigRepository : IConfigRepository
 {
-    
+    private readonly IRuleHelperRepository _ruleHelper;
+
+    public ConfigRepository(IRuleHelperRepository ruleHelper)
+    {
+        _ruleHelper = ruleHelper;
+    }
     public async Task<List<configurationSystemwebServerRewriteRule>> MapXmlToRules(string filePath)
     {
         var rules = new List<configurationSystemwebServerRewriteRule>();
@@ -30,17 +35,16 @@ public class ConfigRepository : IConfigRepository
 
     public async Task<bool> AppendRuleToConfigFile(Rule rule, string filePath)
     {
-        RuleHelperRepository ruleHelper = new(new ConfigRepository());
         await Task.Run(() =>
         {
             try
             {
                 var xDocument = XDocument.Load(filePath);
-                var root = xDocument?.Element("configuration");
+                var root = xDocument.Element("configuration");
                 var rows = root?.Descendants("rules")!;
                 var lastRow = rows?.Last();
-                lastRow?.Add(XDocument.Parse(ruleHelper.GenerateXmlRule(rule)).FirstNode);
-                xDocument?.Save(filePath);
+                lastRow?.Add(XDocument.Parse(_ruleHelper.GenerateXmlRule(rule)).FirstNode);
+                xDocument.Save(filePath);
             }
             catch (Exception e)
             {
@@ -48,7 +52,36 @@ public class ConfigRepository : IConfigRepository
             }
         });
 
-        return await ruleHelper.IsRuleExist(rule,filePath); // in case append done.
+        return _ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); // in case append done.
+    }
+
+    public async Task<bool> RemoveRule(Rule rule, string filePath)
+    {
+        await Task.Run(() =>
+        {
+            try
+            {
+                var doc = new XmlDocument();
+                doc.Load(filePath);
+                var root = doc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes[0]; //trying to access <rules> nodes
+
+                foreach (XmlNode child in root?.ChildNodes[0]!)
+                {
+                    var pattern = child?["conditions"]?["add"]?.Attributes["pattern"]?.Value;
+                    var url = child?["action"]?.Attributes["url"]?.Value.Split('{')[0];
+                    var name = child?.Attributes?["name"]?.Value;
+                    if (rule.Name == name && rule.Pattern == pattern && rule.Url+'/' == url)
+                        root.ChildNodes[0]?.RemoveChild(child!);
+                }
+                doc.Save(filePath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        });
+
+        return _ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); //if rule doesn't exist that means the delete done successfully 
     }
 }
 

@@ -19,7 +19,7 @@ public class RuleRepository : IRuleRepository
 
     public async Task<FileStatus> AddRule(Rule rule)
     {
-        if (await _ruleHelper.IsRuleExist(rule, _configuration["ConfigurationFilePath"])) return FileStatus.FileExist; // in case the same rule exists.
+        if (_ruleHelper.IsRuleExist(rule, await GetAllRules())) return FileStatus.FileExist; // in case the same rule exists.
 
         return await _configFile.AppendRuleToConfigFile(rule, _configuration["ConfigurationFilePath"])
             ? FileStatus.AppendDone
@@ -28,7 +28,7 @@ public class RuleRepository : IRuleRepository
 
     public async Task<bool> RemoveRule(Rule rule)
     {
-        throw new NotImplementedException();
+        return await _configFile.RemoveRule(rule, _configuration["ConfigurationFilePath"]);
     }
 
     public async Task<bool> UpdateRule(Rule rule)
