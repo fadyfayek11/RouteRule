@@ -51,5 +51,10 @@ public class RuleRepository : IRuleRepository
         });
         return s.ToList();
     }
+
+    public List<string> GetPatternPrefixes()
+    {
+       return _configuration.GetSection("PatternPrefixes").Get<List<string>>();
+    }
 }
 

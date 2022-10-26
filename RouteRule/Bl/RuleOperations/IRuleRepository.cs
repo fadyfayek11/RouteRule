@@ -8,4 +8,5 @@ public interface IRuleRepository
     Task<bool> RemoveRule(Rule rule);
     Task<bool> UpdateRule(Rule oldRule,Rule newRule);
     Task<IList<Rule>> GetAllRules();
+    List<string> GetPatternPrefixes();
 }

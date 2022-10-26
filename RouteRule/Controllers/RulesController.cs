@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using RouteRule.Bl.RuleOperations;
 using RouteRule.Models;
 
@@ -62,6 +63,15 @@ namespace RouteRule.Controllers
             }
             return new OkObjectResult(new Response(Status.Error, "Can't update the rule"));
         }
+        [HttpGet]
+        [Route("AllPrefixes")]
+        [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Enumerable), (int)HttpStatusCode.NoContent)]
+        public List<string> GetPrefix()
+        {
+            return _ruleRepository.GetPatternPrefixes();
+        }
+
 
 
     }
