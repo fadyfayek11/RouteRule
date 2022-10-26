@@ -38,5 +38,7 @@ namespace RouteRule.Controllers
             }
             return new OkObjectResult(new Response(Status.Error, addingStatus == FileStatus.Error ? "Error while adding new rule" : "The same rule is already exist"));
         }
+
+
     }
 }

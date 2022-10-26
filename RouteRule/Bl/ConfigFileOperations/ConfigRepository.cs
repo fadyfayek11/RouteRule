@@ -7,7 +7,7 @@ namespace RouteRule.Bl.ConfigFileOperations;
 
 public class ConfigRepository : IConfigRepository
 {
-   
+    
     public async Task<List<configurationSystemwebServerRewriteRule>> MapXmlToRules(string filePath)
     {
         var rules = new List<configurationSystemwebServerRewriteRule>();
@@ -31,15 +31,22 @@ public class ConfigRepository : IConfigRepository
     public async Task<bool> AppendRuleToConfigFile(Rule rule, string filePath)
     {
         RuleHelperRepository ruleHelper = new(new ConfigRepository());
-        await Task.Run((() =>
+        await Task.Run(() =>
         {
-            var xDocument = XDocument.Load(filePath);
-            var root = xDocument?.Element("configuration");
-            var rows = root?.Descendants("rules")!;
-            var lastRow = rows?.Last();
-            lastRow?.Add(XDocument.Parse(ruleHelper.GenerateXmlRule(rule)).FirstNode);
-            xDocument?.Save(filePath);
-        }));
+            try
+            {
+                var xDocument = XDocument.Load(filePath);
+                var root = xDocument?.Element("configuration");
+                var rows = root?.Descendants("rules")!;
+                var lastRow = rows?.Last();
+                lastRow?.Add(XDocument.Parse(ruleHelper.GenerateXmlRule(rule)).FirstNode);
+                xDocument?.Save(filePath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        });
 
         return await ruleHelper.IsRuleExist(rule,filePath); // in case append done.
     }
