@@ -51,6 +51,18 @@ namespace RouteRule.Controllers
             return new OkObjectResult(new Response(Status.Error, "Can't remove the rule"));
         }
 
+        [HttpPut(Name = "UpdateRule")]
+        [ProducesResponseType(typeof(Response),(int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update([FromQuery]Rule oldRule, Rule newRule)
+        {
+            var updateStatus = await _ruleRepository.UpdateRule(oldRule,newRule);
+            if (updateStatus)
+            {
+                return new OkObjectResult(new Response(Status.Success,"Update rule done successfully"));
+            }
+            return new OkObjectResult(new Response(Status.Error, "Can't update the rule"));
+        }
+
 
     }
 }

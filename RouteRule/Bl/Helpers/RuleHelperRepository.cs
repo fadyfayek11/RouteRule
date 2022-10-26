@@ -6,10 +6,10 @@ public class RuleHelperRepository : IRuleHelperRepository
 {
     public bool IsRuleExist(Rule rule, List<configurationSystemwebServerRewriteRule> rules)
     {
-        return  rules.Any(x=>
+        return rules.Any(x =>
             x.name == rule.Name &&
             x.conditions.add.pattern == rule.Pattern &&
-            x.action.url.ToString().Split('{')[0] == rule.Url+'/');
+            x.action.url.Split('{')[0] == rule.Url+'/');
     }
 
     public string GenerateXmlRule(Rule rule)

@@ -31,9 +31,13 @@ public class RuleRepository : IRuleRepository
         return await _configFile.RemoveRule(rule, _configuration["ConfigurationFilePath"]);
     }
 
-    public async Task<bool> UpdateRule(Rule rule)
+    public async Task<bool> UpdateRule(Rule oldRule, Rule newRule)
     {
-        throw new NotImplementedException();
+        var filePath = _configuration["ConfigurationFilePath"];
+        var deleteStatus = await _configFile.RemoveRule(oldRule, filePath);
+        var appendStatus = await _configFile.AppendRuleToConfigFile(newRule, filePath);
+
+        return deleteStatus && appendStatus;
     }
 
     public async Task<IList<Rule>> GetAllRules()

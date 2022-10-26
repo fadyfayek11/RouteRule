@@ -81,7 +81,7 @@ public class ConfigRepository : IConfigRepository
             }
         });
 
-        return _ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); //if rule doesn't exist that means the delete done successfully 
+        return !_ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); //if rule doesn't exist that means the delete done successfully 
     }
 }
 
