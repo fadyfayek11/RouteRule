@@ -2,15 +2,14 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { apiService } from '../shared/apiService.service';
-import * as alertify from 'alertifyjs'
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-rules-edit',
   templateUrl: './rules-edit.component.html',
-  styleUrls: ['./rules-edit.component.css']
+  styleUrls: ['./rules-edit.component.css'],
 })
 export class RulesEditComponent implements OnInit {
-
   constructor(
     private builder: FormBuilder,
     private dialog: MatDialog,
@@ -42,15 +41,18 @@ export class RulesEditComponent implements OnInit {
 
   SaveRule() {
     if (this.ruleForm.valid) {
-      console.log('rule saved');
-      this.api.CreateRule(this.ruleForm.value).subscribe((response) => {
-        alertify.success('Rule updated succesfully');
-      });
+      this.api.CreateRule(this.ruleForm.value).subscribe(
+        (response) => {
+          alertify.success('Rule updated succesfully');
+        },
+        (error) => {
+          alertify.warning('Update failed');
+        }
+      );
       this.closepopup();
     }
   }
   closepopup() {
     this.dialog.closeAll();
   }
-
 }

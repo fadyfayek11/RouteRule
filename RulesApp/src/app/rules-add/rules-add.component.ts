@@ -17,8 +17,9 @@ export class RulesAddComponent implements OnInit {
     private api: apiService
   ) {}
 
+regex :any[] = []
 
-  ngOnInit(): void {
+ngOnInit(): void {
   }
 
   ruleForm = this.builder.group({
@@ -30,9 +31,10 @@ export class RulesAddComponent implements OnInit {
 
   SaveRule() {
     if (this.ruleForm.valid) {
-      console.log('rule saved');
       this.api.CreateRule(this.ruleForm.value).subscribe((response) => {
         alertify.success('Rule created succesfully');
+      },(error) => {
+        alertify.warning('Creation failed');
       });
       this.closepopup();
     }

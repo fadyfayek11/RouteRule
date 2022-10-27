@@ -229,11 +229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Dsquares\\RulesControls\\RulesApi\\RouteRule\\RouteRule.csproj",
+      "projectUniqueName": "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\RouteRule.csproj",
       "projectName": "RouteRule",
-      "projectPath": "D:\\Dsquares\\RulesControls\\RulesApi\\RouteRule\\RouteRule.csproj",
+      "projectPath": "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\RouteRule.csproj",
       "packagesPath": "C:\\Users\\mohamed.najeeb\\.nuget\\packages\\",
-      "outputPath": "D:\\Dsquares\\RulesControls\\RulesApi\\RouteRule\\obj\\",
+      "outputPath": "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mohamed.najeeb\\AppData\\Roaming\\NuGet\\NuGet.Config",

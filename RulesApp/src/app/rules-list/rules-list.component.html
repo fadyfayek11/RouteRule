@@ -1,7 +1,29 @@
+<div class="mat-elevation">
+<mat-form-field appearance="fill">
+  <mat-label>Main partner</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let food of finalData" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
 <div class="mat-elevation-z8">
+  <!-- <mat-selection-list #shoes [multiple]="false">
+    <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+      {{shoe}}
+    </mat-list-option>
+  </mat-selection-list> -->
+
+  <!-- <p>
+    Option selected: {{shoes.selectedOptions.selected[0]?.value}}
+  </p> -->
+
+
+
   <div>
     <a mat-raised-button color="primary" routerLink="create" (click)="openAddPopup()" style="margin: 2%">Create New
-      rule</a>
+      rule </a>
   </div>
 
   <table mat-table [dataSource]="finalData" matSort class="mat-elevation-z8">
@@ -28,9 +50,9 @@
       <th mat-header-cell *matHeaderCellDef>Action</th>
       <td mat-cell *matCellDef="let element">
         <div>
-          <a mat-raised-button (click)="editRule(element.id)" color="primary">Edit</a>
+          <a mat-raised-button (click)="editRule(element.name)" color="primary">Edit</a>
           |
-          <a mat-raised-button (click)="removeRule(element.id)" color="accent">Delete</a>
+          <a mat-raised-button (click)="removeRule(element)" color="accent">Delete</a>
         </div>
       </td>
     </ng-container>

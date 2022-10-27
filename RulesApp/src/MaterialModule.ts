@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card'
 import { MatSelectModule } from '@angular/material/select'
 
 
+
 @NgModule({
     exports: [
         MatInputModule,
@@ -24,6 +25,6 @@ import { MatSelectModule } from '@angular/material/select'
         MatCardModule,
         MatSelectModule
     ]
-       
+
 })
 export class MaterialModule { }
