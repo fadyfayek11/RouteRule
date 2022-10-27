@@ -19,6 +19,7 @@ namespace RouteRule
             builder.Services.AddTransient<IConfigRepository, ConfigRepository>();
             builder.Services.AddSingleton<IRuleRepository, RuleRepository>();
             builder.Services.AddSingleton<IRuleHelperRepository, RuleHelperRepository>();
+            builder.Services.AddCors();
 
             var app = builder.Build();
 
@@ -31,6 +32,8 @@ namespace RouteRule
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors(c=>c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseAuthorization();
 
