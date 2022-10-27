@@ -66,10 +66,10 @@ public class RuleRepository : IRuleRepository
         {
             foreach (var site in m.Sites)
             {
-                var state = IsRouteApp(site.Applications[0].VirtualDirectories[0].PhysicalPath);
+                var state = IsRouteApp(site.Applications[0].VirtualDirectories[0].PhysicalPath, out var fileName);
                 if (state)
                 {
-                    apps.Add(new IISApplication(){Name = site.Name, Path = site.Applications[0].VirtualDirectories[0].PhysicalPath});
+                    apps.Add(new IISApplication(){Name = site.Name, Path = site.Applications[0].VirtualDirectories[0].PhysicalPath +"/"+ fileName});
                 }
             }
 
@@ -81,7 +81,7 @@ public class RuleRepository : IRuleRepository
 
         return apps;
     }
-    private static bool IsRouteApp(string folderPath)
+    private static bool IsRouteApp(string folderPath,out string fileName)
     {
         try
         {
@@ -89,6 +89,7 @@ public class RuleRepository : IRuleRepository
             var info = d.GetFiles("*", SearchOption.AllDirectories);
             if (info.Length == 1 && info[0].Extension == ".config")
             {
+                fileName = info[0].Name;
                 return true;
             }
 
@@ -97,6 +98,7 @@ public class RuleRepository : IRuleRepository
         {
             Console.WriteLine(e);
         }
+        fileName = "";
         return false;
     }
 }
