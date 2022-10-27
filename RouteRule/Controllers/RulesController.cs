@@ -13,11 +13,13 @@ namespace RouteRule.Controllers
        
         private readonly ILogger<RulesController> _logger;
         private readonly IRuleRepository _ruleRepository;
+        private readonly IConfiguration _configuration;
 
-        public RulesController(ILogger<RulesController> logger,IRuleRepository ruleRepository)
+        public RulesController(ILogger<RulesController> logger,IRuleRepository ruleRepository,IConfiguration configuration)
         {
             _logger = logger;
             _ruleRepository = ruleRepository;
+            _configuration = configuration;
         }
         
         [HttpGet(Name = "GetAllRules")]
@@ -63,15 +65,33 @@ namespace RouteRule.Controllers
             }
             return new OkObjectResult(new Response(Status.Error, "Can't update the rule"));
         }
+
         [HttpGet]
-        [Route("AllPrefixes")]
+        [Route("Regex")]
         [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Enumerable), (int)HttpStatusCode.NoContent)]
-        public List<string> GetPrefix()
+        public List<string> GetRegex()
         {
-            return _ruleRepository.GetPatternPrefixes();
+            return _ruleRepository.GetPatternRegex();
+        } 
+
+        [HttpGet]
+        [Route("RouteApps")]
+        [ProducesResponseType(typeof(List<IISApplication>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Enumerable), (int)HttpStatusCode.NoContent)]
+        public List<IISApplication> GetRouteApp()
+        {
+            return _ruleRepository.GetIISRouteApps();
         }
 
+        [HttpPost]
+        [Route("ConfigFilePath")]
+        [ProducesResponseType(typeof(Response), (int)HttpStatusCode.OK)]
+        public IActionResult UpdateConfigPath(string filePath)
+        {
+            _configuration["ConfigurationFilePath"] = filePath;
+            return new OkObjectResult(new Response(Status.Success, "Update new file path done"));
+        }
 
 
     }

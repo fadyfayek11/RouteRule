@@ -1,4 +1,5 @@
-﻿using RouteRule.Bl.ConfigFileOperations;
+﻿using Microsoft.Web.Administration;
+using RouteRule.Bl.ConfigFileOperations;
 using RouteRule.Bl.Helpers;
 using RouteRule.Models;
 
@@ -52,9 +53,53 @@ public class RuleRepository : IRuleRepository
         return s.ToList();
     }
 
-    public List<string> GetPatternPrefixes()
+    public List<string> GetPatternRegex()
     {
-       return _configuration.GetSection("PatternPrefixes").Get<List<string>>();
+       return _configuration.GetSection("PatternRegex").Get<List<string>>();
+    }
+
+    public List<IISApplication> GetIISRouteApps()
+    {
+        var m = new ServerManager();
+        var apps = new List<IISApplication>();
+        try
+        {
+            foreach (var site in m.Sites)
+            {
+                var state = IsRouteApp(site.Applications[0].VirtualDirectories[0].PhysicalPath, out var fileName);
+                if (state)
+                {
+                    apps.Add(new IISApplication(){Name = site.Name, Path = site.Applications[0].VirtualDirectories[0].PhysicalPath +"/"+ fileName});
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return apps;
+    }
+    private static bool IsRouteApp(string folderPath,out string fileName)
+    {
+        try
+        {
+            var d = new DirectoryInfo(folderPath);
+            var info = d.GetFiles("*", SearchOption.AllDirectories);
+            if (info.Length == 1 && info[0].Extension == ".config")
+            {
+                fileName = info[0].Name;
+                return true;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        fileName = "";
+        return false;
     }
 }
 
