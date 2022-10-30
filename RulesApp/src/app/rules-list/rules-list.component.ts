@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SelectItem } from 'primeng/api';
-import { MessageService } from 'primeng/api';
 import { RuleModel } from '../Models/RuleModel';
 import { MatTableDataSource } from '@angular/material/table';
 import { RulesAddComponent } from '../rules-add/rules-add.component';
@@ -26,7 +24,7 @@ export class RulesListComponent implements OnInit {
   displayedColCumns: string[] = ['name', 'url', 'action'];
   dataSource = ELEMENT_DATA;
   finalData: any;
-  regex :any[] = ['name', 'url', 'action']
+  regex :any[] = ['A-Z', '*-09', 'A-[0-9]']
 
   ngOnInit(): void {
     this.LoadRules();
@@ -58,9 +56,14 @@ export class RulesListComponent implements OnInit {
     });
   }
 
+
+  LoadPartenerRules(){
+    console.log("Pareter selected")
+  }
+
   LoadRules() {
     this.api.GetallRules().subscribe((response) => {
-      this.dataSource = response.map((obj) => ({
+      this.dataSource = response.map((obj :RuleModel) => ({
         name: obj.name,
         pattern: obj.pattern,
         url: obj.url.slice(0, -6),
@@ -80,7 +83,7 @@ export class RulesListComponent implements OnInit {
       'Remove Rule',
       'Are you sure you want to remove this rule ?',
       () => {
-        console.log(rule);
+        //console.log(rule);
         this.api.RemoveRule(rule).subscribe(
           (res) => {
             alertify.success('Rule deleted succesfully');

@@ -1,20 +1,35 @@
-
- <form class="example-form" [formGroup]="ruleForm" (ngSubmit)="SaveRule()">
+<form class="example-form" [formGroup]="ruleForm" (ngSubmit)="SaveRule()">
   <mat-card>
     <mat-card-content>
+
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput placeholder="Name" formControlName="name" />
       </mat-form-field>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Pattern</mat-label>
-        <input matInput placeholder="Enter your pattern" formControlName="pattern" />
+
+      <mat-form-field id="prefixStyle" appearance="fill" mar>
+        <mat-label>Prefix</mat-label>
+        <input matInput placeholder="Enter a unique prefix" formControlName="prefix" />
       </mat-form-field>
+
+      <mat-form-field id="regexStyle" appearance="fill">
+        <mat-label>Regex</mat-label>
+        <mat-select formControlName="regex" required>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let reg of regex" [value]="reg">
+            {{reg}}
+          </mat-option>
+        </mat-select>
+        <!-- <mat-error *ngIf=".hasError('required')">Please choose a regex first </mat-error> -->
+        <mat-hint></mat-hint>
+      </mat-form-field>
+
 
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>URL</mat-label>
         <input matInput placeholder="URL" formControlName="url" />
       </mat-form-field>
+
     </mat-card-content>
     <mat-card-footer>
       <div class="example-button-row" style="margin: 2px">

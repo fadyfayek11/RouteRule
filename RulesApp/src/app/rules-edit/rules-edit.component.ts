@@ -17,19 +17,11 @@ export class RulesEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  ruleToEdit: any;
+  regex: string[] = [];
 
   ngOnInit(): void {
-    if (this.data.name != '' && this.data.name != null) {
-      this.api.GetRulebyName(this.data.name).subscribe((response) => {
-        this.ruleToEdit = response;
-        this.ruleForm.setValue({
-          name: this.ruleToEdit.name,
-          pattern: this.ruleToEdit.pattern,
-          url: this.ruleToEdit.url,
-        });
-      });
-    }
+this.LoadRegex()
+
   }
 
   ruleForm = this.builder.group({
@@ -40,19 +32,24 @@ export class RulesEditComponent implements OnInit {
   });
 
   SaveRule() {
-    if (this.ruleForm.valid) {
-      this.api.CreateRule(this.ruleForm.value).subscribe(
-        (response) => {
-          alertify.success('Rule updated succesfully');
-        },
-        (error) => {
-          alertify.warning('Update failed');
-        }
-      );
-      this.closepopup();
-    }
+    // if (this.ruleForm.valid) {
+    //   this.api.CreateRule(this.ruleForm.value).subscribe(
+    //     (response) => {
+    //       alertify.success('Rule updated succesfully');
+    //     },
+    //     (error) => {
+    //       alertify.warning('Update failed');
+    //     }
+    //   );
+    //   this.closepopup();
+    // }
   }
   closepopup() {
     this.dialog.closeAll();
+  }
+
+  LoadRegex()
+  {
+    this.api.GetRegex().subscribe((res)=>{this.regex=res})
   }
 }

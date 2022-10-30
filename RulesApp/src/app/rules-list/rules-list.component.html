@@ -1,29 +1,18 @@
 <div class="mat-elevation">
-<mat-form-field appearance="fill">
-  <mat-label>Main partner</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let food of finalData" [value]="food.value">
-      {{food.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Main partner</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let partener of regex" [value]="partener.value" (onSelectionChange)="LoadPartenerRules()">
+        {{ partener }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
+
 <div class="mat-elevation-z8">
-  <!-- <mat-selection-list #shoes [multiple]="false">
-    <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
-      {{shoe}}
-    </mat-list-option>
-  </mat-selection-list> -->
-
-  <!-- <p>
-    Option selected: {{shoes.selectedOptions.selected[0]?.value}}
-  </p> -->
-
-
-
   <div>
-    <a mat-raised-button color="primary" routerLink="create" (click)="openAddPopup()" style="margin: 2%">Create New
-      rule </a>
+    <a mat-raised-button color="primary" routerLink="create" (click)="openAddPopup()" style="margin: 2%">Create New rule
+    </a>
   </div>
 
   <table mat-table [dataSource]="finalData" matSort class="mat-elevation-z8">
