@@ -2,8 +2,8 @@
   <mat-form-field appearance="fill">
     <mat-label>Main partner</mat-label>
     <mat-select>
-      <mat-option *ngFor="let partener of regex" [value]="partener.value" (onSelectionChange)="LoadPartenerRules()">
-        {{ partener }}
+      <mat-option *ngFor="let partener of MainSites" [value]="partener.value" (onSelectionChange)="LoadPartenerRules(partener.path)">
+        {{ partener.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>

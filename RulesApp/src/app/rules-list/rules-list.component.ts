@@ -24,10 +24,11 @@ export class RulesListComponent implements OnInit {
   displayedColCumns: string[] = ['name', 'url', 'action'];
   dataSource = ELEMENT_DATA;
   finalData: any;
-  regex :any[] = ['A-Z', '*-09', 'A-[0-9]']
+  MainSites: any[] = [];
 
   ngOnInit(): void {
     this.LoadRules();
+    this.LoadMainSites();
   }
 
   openAddPopup() {
@@ -56,14 +57,18 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-
-  LoadPartenerRules(){
-    console.log("Pareter selected")
+  LoadPartenerRules(path: string) {
+    //console.log(path)
+    this.api.FilePathSet(path).subscribe((res) => {
+      this.LoadRules();
+    },(error) => {
+      alertify.warning('Site not available');
+    });
   }
 
   LoadRules() {
     this.api.GetallRules().subscribe((response) => {
-      this.dataSource = response.map((obj :RuleModel) => ({
+      this.dataSource = response.map((obj: RuleModel) => ({
         name: obj.name,
         pattern: obj.pattern,
         url: obj.url.slice(0, -6),
@@ -78,7 +83,7 @@ export class RulesListComponent implements OnInit {
     this.openEditPopup(name);
   }
 
-  removeRule(rule:RuleModel) {
+  removeRule(rule: RuleModel) {
     alertify.confirm(
       'Remove Rule',
       'Are you sure you want to remove this rule ?',
@@ -96,5 +101,11 @@ export class RulesListComponent implements OnInit {
       },
       function () {}
     );
+  }
+
+  LoadMainSites() {
+    this.api.GetMainSites().subscribe((res) => {
+      this.MainSites = res;
+    });
   }
 }

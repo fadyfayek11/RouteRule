@@ -73,4 +73,7 @@ export class RulesAddComponent implements OnInit {
       this.regex = res;
     });
   }
+
+
+  
 }

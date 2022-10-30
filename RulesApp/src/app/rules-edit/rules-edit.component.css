@@ -1,3 +1,14 @@
 .mat-form-field{
   width: 100%;
 }
+
+
+#prefixStyle{
+  width: 30%;
+  margin-right: 2%;
+}
+
+#regexStyle{
+  width: 65%;
+  margin-left: 2%;
+}
