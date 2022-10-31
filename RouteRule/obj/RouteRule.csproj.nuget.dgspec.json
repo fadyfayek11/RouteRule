@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Work\\Projects\\RouteRule\\RouteRule\\RouteRule.csproj": {}
+    "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\RouteRule.csproj": {}
   },
   "projects": {
-    "D:\\Work\\Projects\\RouteRule\\RouteRule\\RouteRule.csproj": {
+    "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\RouteRule.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Work\\Projects\\RouteRule\\RouteRule\\RouteRule.csproj",
+        "projectUniqueName": "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\RouteRule.csproj",
         "projectName": "RouteRule",
-        "projectPath": "D:\\Work\\Projects\\RouteRule\\RouteRule\\RouteRule.csproj",
-        "packagesPath": "C:\\Users\\Fady.Fayek\\.nuget\\packages\\",
-        "outputPath": "D:\\Work\\Projects\\RouteRule\\RouteRule\\obj\\",
+        "projectPath": "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\RouteRule.csproj",
+        "packagesPath": "C:\\Users\\mohamed.najeeb\\.nuget\\packages\\",
+        "outputPath": "D:\\Dsquares\\RulesControls\\Rules\\RouteRule\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Fady.Fayek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mohamed.najeeb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -68,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

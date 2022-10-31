@@ -5,9 +5,8 @@ import { ɵInjectableAnimationEngine } from '@angular/platform-browser/animation
 import { apiService } from '../shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RuleModel } from '../Models/RuleModel';
-import { formatDate } from '@angular/common';
 import { concat, elementAt } from 'rxjs';
-import { forbiddenPrefixValidator } from '../shared/forbidden-prefix.directive';
+import { forbiddenPrefixValidator } from '../shared/forbidden-name.directive';
 
 @Component({
   selector: 'app-rules-add',
@@ -24,12 +23,14 @@ export class RulesAddComponent implements OnInit {
 
   regexs: string[] = [];
   prefixes: string[] = [];
+  names:string[]=[]
 
   ngOnInit(): void {
     this.LoadRegex();
-    this.LoadPrefixes();
+    this.LoadPrefixes_names();
     //console.log(this.data)
-    console.log(this.prefixes);
+    //console.log(this.prefixes)
+    //console.log(this.names);
   }
 
   prefixControl = new FormControl('', [
@@ -54,7 +55,7 @@ export class RulesAddComponent implements OnInit {
           .get('prefix')?.value!+")"+this.ruleForm.get('regex')?.value!+"(.*)",
         url: this.ruleForm.get('url')?.value!,
       };
-      console.log(newRule);
+      //console.log(newRule);
 
       this.api.CreateRule(newRule).subscribe(
         (response) => {
@@ -78,9 +79,13 @@ export class RulesAddComponent implements OnInit {
     });
   }
 
-  LoadPrefixes() {
+  LoadPrefixes_names() {
     this.data.allRules.filteredData.map((element: RuleModel) => {
       this.prefixes.push(element.pattern?.substring(18, 21));
+    });
+
+    this.data.allRules.filteredData.map((element: RuleModel) => {
+      this.names.push(element.name);
     });
   }
 }

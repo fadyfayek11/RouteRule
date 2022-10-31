@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { forbiddenPrefixValidator } from '../shared/forbidden-prefix.directive';
+import { forbiddenPrefixValidator } from '../shared/forbidden-name.directive';
 import { apiService } from '../shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RuleModel } from '../Models/RuleModel';
@@ -49,21 +49,21 @@ export class RulesEditComponent implements OnInit {
     if (this.ruleForm.valid) {
       let newRule: RuleModel = {
         name: this.ruleForm.get('name')?.value!,
-        pattern: this.ruleForm
-          .get('prefix')
-          ?.value?.concat('', this.ruleForm.get('regex')?.value!)!,
+        pattern:"(.*)"+"(couponNumber="+this.ruleForm
+          .get('prefix')?.value!+")"+this.ruleForm.get('regex')?.value!+"(.*)",
         url: this.ruleForm.get('url')?.value!,
       };
-      console.log(newRule);
 
-      this.api.UpdateRule(this.data.oldRule,newRule).subscribe(
-        (response) => {
-          alertify.success('Rule updated succesfully');
-        },
-        (error) => {
-          alertify.warning('update failed');
-        }
-      );
+      //console.log(newRule);
+
+       this.api.UpdateRule(this.data.oldRule,newRule).subscribe(
+         (response) => {
+           alertify.success('Rule updated succesfully');
+         },
+         (error) => {
+           alertify.warning('update failed');
+         }
+       );
 
       this.closepopup();
     }
