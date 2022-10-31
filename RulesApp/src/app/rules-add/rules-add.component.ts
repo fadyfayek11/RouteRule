@@ -23,7 +23,6 @@ export class RulesAddComponent implements OnInit {
   ) {}
 
   regexs: string[] = [];
-  formData = new FormData();
   prefixes: string[] = [];
 
   ngOnInit(): void {
@@ -51,9 +50,8 @@ export class RulesAddComponent implements OnInit {
     if (this.ruleForm.valid) {
       let newRule: RuleModel = {
         name: this.ruleForm.get('name')?.value!,
-        pattern: this.ruleForm
-          .get('prefix')
-          ?.value?.concat('', this.ruleForm.get('regex')?.value!)!,
+        pattern:"(.*)"+"(couponNumber="+this.ruleForm
+          .get('prefix')?.value!+")"+this.ruleForm.get('regex')?.value!+"(.*)",
         url: this.ruleForm.get('url')?.value!,
       };
       console.log(newRule);
@@ -85,6 +83,4 @@ export class RulesAddComponent implements OnInit {
       this.prefixes.push(element.pattern?.substring(18, 21));
     });
   }
-
-  checkPrefix() {}
 }

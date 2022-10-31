@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { forbiddenPrefixValidator } from '../shared/forbidden-prefix.directive';
 import { apiService } from '../shared/apiService.service';
@@ -19,16 +19,28 @@ export class RulesEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  regex: string[] = [];
+  regexs: string[] = [];
+  prefixes: string[] = [];
 
   ngOnInit(): void {
     this.LoadRegex();
+    this.LoadPrefixes();
+    console.log(this.prefixes);
+    console.log(this.data.oldRule);
+    this.ruleForm.get('name')?.setValue(this.data.oldRule.name);
+    this.ruleForm.get('url')?.setValue(this.data.oldRule.url);
   }
+
+  prefixControl = new FormControl('', [
+    Validators.required,
+    forbiddenPrefixValidator(this.prefixes),
+  ]);
+  regexControl = new FormControl('', Validators.required);
 
   ruleForm = this.builder.group({
     name: this.builder.control('', Validators.required),
-    prefix: this.builder.control('', Validators.required),
-    regex: this.builder.control('', Validators.required),
+    prefix: this.prefixControl,
+    regex: this.regexControl,
     url: this.builder.control('', Validators.required),
     // isactive: this.builder.control(true),
   });
@@ -44,12 +56,12 @@ export class RulesEditComponent implements OnInit {
       };
       console.log(newRule);
 
-      this.api.CreateRule(newRule).subscribe(
+      this.api.UpdateRule(this.data.oldRule,newRule).subscribe(
         (response) => {
-          alertify.success('Rule created succesfully');
+          alertify.success('Rule updated succesfully');
         },
         (error) => {
-          alertify.warning('Creation failed');
+          alertify.warning('update failed');
         }
       );
 
@@ -63,7 +75,13 @@ export class RulesEditComponent implements OnInit {
 
   LoadRegex() {
     this.api.GetRegex().subscribe((res) => {
-      this.regex = res;
+      this.regexs = res;
+    });
+  }
+
+  LoadPrefixes() {
+    this.data.allRules.filteredData.map((element: RuleModel) => {
+      this.prefixes.push(element.pattern?.substring(18, 21));
     });
   }
 }

@@ -45,16 +45,16 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-  openEditPopup(name: any) {
+  openEditPopup(rule: any) {
     const _popup = this.dialog.open(RulesEditComponent, {
-      width: '500px',
+      width: '600px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
       data: {
-        name: name,
+        allRules: this.finalData,
+        oldRule:rule
       },
     });
-    console.log(name);
     _popup.afterClosed().subscribe((res) => {
       this.LoadRules();
     });
@@ -85,8 +85,8 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-  editRule(name: any) {
-    this.openEditPopup(name);
+  editRule(rule :any) {
+    this.openEditPopup(rule);
   }
 
   removeRule(rule: RuleModel) {
