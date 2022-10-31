@@ -8,7 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/MaterialModule';
 import { ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import { RulesEditComponent } from './rules-edit/rules-edit.component'
+import { RulesEditComponent } from './rules-edit/rules-edit.component';
+import { LoginComponent } from './login/login.component'
 
 
 
@@ -18,7 +19,8 @@ import { RulesEditComponent } from './rules-edit/rules-edit.component'
     AppComponent,
     RulesListComponent,
     RulesAddComponent,
-    RulesEditComponent
+    RulesEditComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

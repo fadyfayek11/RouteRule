@@ -39,8 +39,8 @@ export class apiService {
   UpdateRule(oldRule: RuleModel, newRule: RuleModel) {
     const params = new HttpParams().set('name', oldRule.name).set('pattern',oldRule.pattern).set('url',oldRule.url);
 
-    const options = { body: newRule}
-    return this.http.put(this.apiUrl,options,{params:params});
+    //const options = { body: newRule}
+    return this.http.put(this.apiUrl,newRule,{params:params});
   }
 
   GetRegex(): Observable<string[]> {
