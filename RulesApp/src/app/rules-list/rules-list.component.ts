@@ -36,6 +36,9 @@ export class RulesListComponent implements OnInit {
       width: '600px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
+      data: {
+        allRules: this.finalData
+      },
     });
     _popup.afterClosed().subscribe((res) => {
       this.LoadRules();
@@ -59,11 +62,14 @@ export class RulesListComponent implements OnInit {
 
   LoadPartenerRules(path: string) {
     //console.log(path)
-    this.api.FilePathSet(path).subscribe((res) => {
-      this.LoadRules();
-    },(error) => {
-      alertify.warning('Site not available');
-    });
+    this.api.FilePathSet(path).subscribe(
+      (res) => {
+        this.LoadRules();
+      },
+      (error) => {
+        alertify.warning('Site not available');
+      }
+    );
   }
 
   LoadRules() {

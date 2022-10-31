@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { forbiddenPrefixValidator } from '../shared/forbidden-prefix.directive';
 import { apiService } from '../shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RuleModel } from '../Models/RuleModel';
