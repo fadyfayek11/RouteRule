@@ -14,7 +14,7 @@ export class apiService {
   apiUrl = 'https://localhost:7046/Api/Rules';
   regexUrl = 'https://localhost:7046/Api/Rules/Regex';
   sitesUrl = 'https://localhost:7046/Api/Rules/RouteApps';
-  pathUrl = 'https://localhost:7046/Api/Rules/ConfigFilePath'
+  pathUrl = 'https://localhost:7046/Api/Rules/ConfigFilePath';
 
   GetallRules(): Observable<RuleModel[]> {
     return this.http.get<RuleModel[]>(this.apiUrl);
@@ -36,24 +36,24 @@ export class apiService {
     return this.http.post(this.apiUrl, ruleData);
   }
 
-  UpdateRule(name: any, ruleData: any) {
-    return this.http.put(this.apiUrl + '/' + name, ruleData);
+  UpdateRule(oldRule: RuleModel, newRule: RuleModel) {
+    const params = new HttpParams().set('name', oldRule.name).set('pattern',oldRule.pattern).set('url',oldRule.url);
+
+    const options = { body: newRule}
+    return this.http.put(this.apiUrl,options,{params:params});
   }
 
   GetRegex(): Observable<string[]> {
     return this.http.get<string[]>(this.regexUrl);
   }
 
-  GetMainSites():Observable<any[]>
-  {
+  GetMainSites(): Observable<any[]> {
     return this.http.get<any[]>(this.sitesUrl);
   }
 
-  FilePathSet(site :string)
-  {
-    const params = new HttpParams()
-    .set('filePath',site)
+  FilePathSet(site: string) {
+    const params = new HttpParams().set('filePath', site);
 
-    return this.http.post(this.pathUrl,'',{'params': params})
+    return this.http.post(this.pathUrl, '', { params: params });
   }
 }
