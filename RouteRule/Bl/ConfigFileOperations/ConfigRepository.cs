@@ -8,10 +8,12 @@ namespace RouteRule.Bl.ConfigFileOperations;
 public class ConfigRepository : IConfigRepository
 {
     private readonly IRuleHelperRepository _ruleHelper;
+    private readonly IConfiguration _configuration;
 
-    public ConfigRepository(IRuleHelperRepository ruleHelper)
+    public ConfigRepository(IRuleHelperRepository ruleHelper,IConfiguration configuration)
     {
         _ruleHelper = ruleHelper;
+        _configuration = configuration;
     }
     public async Task<List<configurationSystemwebServerRewriteRule>> MapXmlToRules(string filePath)
     {
@@ -82,6 +84,31 @@ public class ConfigRepository : IConfigRepository
         });
 
         return !_ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); //if rule doesn't exist that means the delete done successfully 
+    }
+
+    public bool CreateArchiveFolder(string dir)
+    {
+        var directoryInfo = Directory.CreateDirectory(dir+"/archive");
+        return directoryInfo.Exists;
+    }
+
+    public string CreateArchiveTimeStampFolder(string dir)
+    {
+        var path = dir + "/" + DateTime.Today.ToShortDateString().Replace('/', '-') + "#" + Guid.NewGuid();
+        Directory.CreateDirectory(path);
+        return path;
+    }
+
+    public bool CopyOldConfigToArchive(string oldDir)
+    {
+        var newDir = CreateArchiveTimeStampFolder(_configuration["ConfigurationFilePath"]+ "/archive");
+        File.Copy(oldDir, newDir + "/" + Path.GetFileName(oldDir));
+        return IsFolderExist(newDir); 
+    }
+
+    public bool IsFolderExist(string dir)
+    {
+        return Directory.Exists(dir);
     }
 }
 
