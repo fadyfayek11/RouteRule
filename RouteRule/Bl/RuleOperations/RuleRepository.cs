@@ -36,7 +36,11 @@ public class RuleRepository : IRuleRepository
     {
         var filePath = _configuration["ConfigurationFilePath"];
         var deleteStatus = await _configFile.RemoveRule(oldRule, filePath);
-        var appendStatus = await _configFile.AppendRuleToConfigFile(newRule, filePath);
+
+        var appendStatus = false;
+        if (deleteStatus)
+            appendStatus = await _configFile.AppendRuleToConfigFile(newRule, filePath);
+        
 
         return deleteStatus && appendStatus;
     }
