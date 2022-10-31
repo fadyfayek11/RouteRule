@@ -1,6 +1,7 @@
 using RouteRule.Bl.ConfigFileOperations;
 using RouteRule.Bl.Helpers;
 using RouteRule.Bl.RuleOperations;
+using RouteRule.Models;
 
 namespace RouteRule
 {
@@ -20,7 +21,7 @@ namespace RouteRule
             builder.Services.AddSingleton<IRuleRepository, RuleRepository>();
             builder.Services.AddSingleton<IRuleHelperRepository, RuleHelperRepository>();
             builder.Services.AddCors();
-
+            builder.Services.Configure<Login>(builder.Configuration.GetSection("Login"));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

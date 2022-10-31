@@ -1,6 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using RouteRule.Bl.Helpers;
 using RouteRule.Bl.RuleOperations;
 using RouteRule.Models;
 
@@ -10,14 +10,13 @@ namespace RouteRule.Controllers
     [Route("Api/[controller]")]
     public class RulesController : ControllerBase
     {
-       
-        private readonly ILogger<RulesController> _logger;
+        private readonly IRuleHelperRepository _helperRepository;
         private readonly IRuleRepository _ruleRepository;
         private readonly IConfiguration _configuration;
 
-        public RulesController(ILogger<RulesController> logger,IRuleRepository ruleRepository,IConfiguration configuration)
+        public RulesController(IRuleHelperRepository helperRepository,IRuleRepository ruleRepository,IConfiguration configuration)
         {
-            _logger = logger;
+            _helperRepository = helperRepository;
             _ruleRepository = ruleRepository;
             _configuration = configuration;
         }
@@ -91,6 +90,15 @@ namespace RouteRule.Controllers
         {
             _configuration["ConfigurationFilePath"] = filePath;
             return new OkObjectResult(new Response(Status.Success, "Update new file path done"));
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        [ProducesResponseType(typeof(Response), (int)HttpStatusCode.OK)]
+        public IActionResult Login(Login login)
+        {
+            var successLogin = _helperRepository.IsLoggedIn(login);
+            return new OkObjectResult(new Response(Status.Success, successLogin ? "Login done successfully":"Error while login"));
         }
 
 
