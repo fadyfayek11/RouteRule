@@ -9,9 +9,9 @@ public enum Status
     Warning,
     Error
 }
-public enum FileStatus
+public enum RuleStatus
 {
     AppendDone,
-    FileExist,
+    RuleExist,
     Error
 }

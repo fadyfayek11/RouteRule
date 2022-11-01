@@ -22,6 +22,7 @@ namespace RouteRule
             builder.Services.AddSingleton<IRuleHelperRepository, RuleHelperRepository>();
             builder.Services.AddCors();
             builder.Services.Configure<Login>(builder.Configuration.GetSection("Login"));
+            builder.Services.Configure<IISApplication>(builder.Configuration.GetSection("IISApplication"));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
