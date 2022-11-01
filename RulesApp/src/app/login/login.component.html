@@ -1,27 +1,25 @@
-<mat-card>
-  <mat-card-title>Login</mat-card-title>
-<mat-card-content>
-<form [formGroup]="form" (ngSubmit)="submit()">
-<p>
-  <mat-form-field>
-    <input type="text" matInput placeholder="Username" formControlName="username">
-  </mat-form-field>
-  <mat-error *ngIf="usernameControl.hasError('required')">Empty</mat-error>
-</p>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+  <mat-card fxFlex="25">
+    <form fxLayoutAlign="stretch" fxLayout="column" class="main-form">
+      <mat-card-content>
 
-<p>
-  <mat-form-field>
-    <input type="password" matInput placeholder="Password" formControlName="password">
-  </mat-form-field>
-  <mat-error *ngIf="passwordControl.hasError('required')">Empty</mat-error>
-</p>
+        <mat-toolbar color="primary">Login Page</mat-toolbar>
 
+        <mat-form-field>
+          <input type="text" matInput placeholder="Username" formControlName="username">
+        </mat-form-field>
+        <mat-error *ngIf="usernameControl.hasError('required')">Empty</mat-error>
 
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" formControlName="password">
+        </mat-form-field>
+        <mat-error *ngIf="passwordControl.hasError('required')">Empty</mat-error>
 
-<div class="button">
-  <button type="submit" mat-button>Login</button>
+        <div class="button">
+          <button mat-raised-button type="submit" color="primary">Login</button>
+        </div>
+
+      </mat-card-content>
+    </form>
+  </mat-card>
 </div>
-
-</form>
-</mat-card-content>
-</mat-card>
