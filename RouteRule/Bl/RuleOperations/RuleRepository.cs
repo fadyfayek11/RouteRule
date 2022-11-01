@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.Administration;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.Web.Administration;
 using RouteRule.Bl.ConfigFileOperations;
 using RouteRule.Bl.Helpers;
 using RouteRule.Models;
@@ -7,34 +8,36 @@ namespace RouteRule.Bl.RuleOperations;
 
 public class RuleRepository : IRuleRepository
 {
-    private readonly IConfigRepository _configFile;
     private readonly IConfiguration _configuration;
+    private readonly IConfigRepository _configFile;
+    private readonly IISApplication _iisApplication;
     private readonly IRuleHelperRepository _ruleHelper;
 
-    public RuleRepository(IConfigRepository configFile,IConfiguration configuration,IRuleHelperRepository ruleHelper)
+    public RuleRepository(IConfiguration configuration,IOptions<IISApplication> iisAppOptions, IConfigRepository configFile, IRuleHelperRepository ruleHelper)
     {
-        _configFile = configFile;
         _configuration = configuration;
+        _configFile = configFile;
         _ruleHelper = ruleHelper;
+        _iisApplication = iisAppOptions.Value;
     }
-
-    public async Task<FileStatus> AddRule(Rule rule)
+    
+    public async Task<RuleStatus> AddRule(Rule rule)
     {
-        if (_ruleHelper.IsRuleExist(rule, await GetAllRules())) return FileStatus.FileExist; // in case the same rule exists.
+        if (_ruleHelper.IsRuleExist(rule, await GetAllRules())) return RuleStatus.RuleExist; // in case the same rule exists.
 
-        return await _configFile.AppendRuleToConfigFile(rule, _configuration["ConfigurationFilePath"])
-            ? FileStatus.AppendDone
-            : FileStatus.Error;
+        return await _configFile.AppendRuleToConfigFile(rule, _iisApplication.ConfigurationFilePath)
+            ? RuleStatus.AppendDone
+            : RuleStatus.Error;
     }
 
     public async Task<bool> RemoveRule(Rule rule)
     {
-        return await _configFile.RemoveRule(rule, _configuration["ConfigurationFilePath"]);
+        return await _configFile.RemoveRule(rule, _iisApplication.ConfigurationFilePath);
     }
 
     public async Task<bool> UpdateRule(Rule oldRule, Rule newRule)
     {
-        var filePath = _configuration["ConfigurationFilePath"];
+        var filePath = _iisApplication.ConfigurationFilePath;
         var deleteStatus = await _configFile.RemoveRule(oldRule, filePath);
 
         var appendStatus = false;
@@ -47,7 +50,7 @@ public class RuleRepository : IRuleRepository
 
     public async Task<IList<Rule>> GetAllRules()
     {
-        var res = await _configFile.MapXmlToRules(_configuration["ConfigurationFilePath"]);
+        var res = await _configFile.MapXmlToRules(_iisApplication.ConfigurationFilePath);
         var s = res.Select(x => new Rule()
         {
             Name = x?.name,
@@ -73,7 +76,7 @@ public class RuleRepository : IRuleRepository
                 var state = IsRouteApp(site.Applications[0].VirtualDirectories[0].PhysicalPath, out var fileName);
                 if (state)
                 {
-                    apps.Add(new IISApplication(){Name = site.Name, Path = site.Applications[0].VirtualDirectories[0].PhysicalPath +"/"+ fileName});
+                    apps.Add(new IISApplication(){Name = site.Name, ConfigurationFilePath = site.Applications[0].VirtualDirectories[0].PhysicalPath +"/"+ fileName,FolderPath = site.Applications[0].VirtualDirectories[0].PhysicalPath });
                 }
             }
 
@@ -90,8 +93,8 @@ public class RuleRepository : IRuleRepository
         try
         {
             var d = new DirectoryInfo(folderPath);
-            var info = d.GetFiles("*", SearchOption.AllDirectories);
-            if (info.Length == 1 && info[0].Extension == ".config")
+            var info = d.GetFiles("*", SearchOption.TopDirectoryOnly);
+            if (info.Length <= 2 && info[0].Extension == ".config")
             {
                 fileName = info[0].Name;
                 return true;

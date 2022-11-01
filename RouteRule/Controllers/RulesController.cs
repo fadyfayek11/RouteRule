@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using RouteRule.Bl.Helpers;
 using RouteRule.Bl.RuleOperations;
 using RouteRule.Models;
@@ -12,13 +13,13 @@ namespace RouteRule.Controllers
     {
         private readonly IRuleHelperRepository _helperRepository;
         private readonly IRuleRepository _ruleRepository;
-        private readonly IConfiguration _configuration;
+        private readonly IISApplication _iisApplication;
 
-        public RulesController(IRuleHelperRepository helperRepository,IRuleRepository ruleRepository,IConfiguration configuration)
+        public RulesController(IOptions<IISApplication> iisApplicationOptions,IRuleHelperRepository helperRepository,IRuleRepository ruleRepository)
         {
             _helperRepository = helperRepository;
             _ruleRepository = ruleRepository;
-            _configuration = configuration;
+            _iisApplication = iisApplicationOptions.Value;
         }
         
         [HttpGet(Name = "GetAllRules")]
@@ -34,11 +35,11 @@ namespace RouteRule.Controllers
         public async Task<IActionResult> Add([FromBody] Rule rule)
         {
             var addingStatus = await _ruleRepository.AddRule(rule);
-            if (addingStatus == FileStatus.AppendDone)
+            if (addingStatus == RuleStatus.AppendDone)
             {
                 return new OkObjectResult(new Response(Status.Success,"Adding new rule done successfully"));
             }
-            return new OkObjectResult(new Response(Status.Error, addingStatus == FileStatus.Error ? "Error while adding new rule" : "The same rule is already exist"));
+            return new OkObjectResult(new Response(Status.Error, addingStatus == RuleStatus.Error ? "Error while adding new rule" : "The same rule is already exist"));
         }
         
         [HttpDelete(Name = "DeleteRule")]
@@ -84,11 +85,13 @@ namespace RouteRule.Controllers
         }
 
         [HttpPost]
-        [Route("ConfigFilePath")]
+        [Route("ApplicationPath")]
         [ProducesResponseType(typeof(Response), (int)HttpStatusCode.OK)]
-        public IActionResult UpdateConfigPath(string filePath)
+        public IActionResult UpdateApplicationPath(IISApplication iisApplicationModel)
         {
-            _configuration["ConfigurationFilePath"] = filePath;
+            _iisApplication.ConfigurationFilePath = iisApplicationModel.ConfigurationFilePath;
+            _iisApplication.Name = iisApplicationModel.Name;
+            _iisApplication.FolderPath = iisApplicationModel.FolderPath;
             return new OkObjectResult(new Response(Status.Success, "Update new file path done"));
         }
 
