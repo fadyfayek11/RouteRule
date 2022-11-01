@@ -109,9 +109,9 @@ public class ConfigRepository : IConfigRepository
         return directoryInfo.Exists;
     }
 
-    private static string CreateArchiveTimeStampFolder(string dir)
+    private static string CreateArchiveTimeStampFolder(string dir, string ruleName)
     {
-        var path = dir + "/" + DateTime.Today.ToShortDateString().Replace('/', '-') + "#" + Guid.NewGuid();
+        var path = dir + "/" + DateTime.Today.ToShortDateString().Replace('/', '-') + "#" + Guid.NewGuid() + "#" + ruleName;
         Directory.CreateDirectory(path);
         return path;
     }
@@ -132,13 +132,13 @@ public class ConfigRepository : IConfigRepository
         var archiveTimeStampFolderPath = "";
         try
         {
-            var archiveFolder = _iisApplication.FolderPath + "/archive/" + ruleName;
+            var archiveFolder = _iisApplication.FolderPath + "/archive";
             if (IsFolderExist(archiveFolder))
-                archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder);
+                archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder, ruleName);
             else
             {
                 var isCreated = CreateArchiveFolder(archiveFolder);
-                if(isCreated) archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder);
+                if(isCreated) archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder, ruleName);
             }
         }
         catch (Exception e)
