@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using RouteRule.Bl.Archive;
 using RouteRule.Bl.Helpers;
 using RouteRule.Bl.RuleOperations;
 using RouteRule.Models;
@@ -11,21 +12,23 @@ namespace RouteRule.Controllers
     [Route("Api/[controller]")]
     public class RulesController : ControllerBase
     {
+        private readonly IArchiveRepository _archiveRepository;
         private readonly IRuleHelperRepository _helperRepository;
         private readonly IRuleRepository _ruleRepository;
         private readonly IISApplication _iisApplication;
 
-        public RulesController(IOptions<IISApplication> iisApplicationOptions,IRuleHelperRepository helperRepository,IRuleRepository ruleRepository)
+        public RulesController(IArchiveRepository archiveRepository,IOptions<IISApplication> iisApplicationOptions,IRuleHelperRepository helperRepository,IRuleRepository ruleRepository)
         {
+            _archiveRepository = archiveRepository;
             _helperRepository = helperRepository;
             _ruleRepository = ruleRepository;
             _iisApplication = iisApplicationOptions.Value;
         }
         
-        [HttpGet(Name = "GetAllRules")]
+        [HttpGet(Name = "Rules")]
         [ProducesResponseType(typeof(IList<Rule>),(int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Enumerable),(int)HttpStatusCode.NoContent)]
-        public async Task<IList<Rule>> Get()
+        public async Task<IList<Rule>> Rules()
         {
             return await _ruleRepository.GetAllRules();
         }
@@ -104,6 +107,29 @@ namespace RouteRule.Controllers
             return new OkObjectResult(new Response(Status.Success, successLogin ? "Login done successfully":"Error while login"));
         }
 
-
+        [HttpGet]
+        [Route("Archives")]
+        [ProducesResponseType(typeof(List<Archive>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Enumerable), (int)HttpStatusCode.NoContent)]
+        public List<Archive> GetArchives()
+        {
+            return _archiveRepository.GetAllArchives();
+        }
+        [HttpPost]
+        [Route("RollBack")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.BadRequest)]
+        public bool RollBack(string archivePath)
+        {
+            return _archiveRepository.RollBack(archivePath);
+        }
+        [HttpGet]
+        [Route("Rules")]
+        [ProducesResponseType(typeof(List<Rule>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Enumerable), (int)HttpStatusCode.NoContent)]
+        public async Task<IList<Rule>> GetRules(string configPath)
+        {
+            return await _archiveRepository.GetAllRules(configPath);
+        }
     }
 }

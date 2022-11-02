@@ -51,13 +51,13 @@ public class RuleRepository : IRuleRepository
     public async Task<IList<Rule>> GetAllRules()
     {
         var res = await _configFile.MapXmlToRules(_iisApplication.ConfigurationFilePath);
-        var s = res.Select(x => new Rule()
+        var rules = res.Select(x => new Rule()
         {
             Name = x?.name,
             Pattern = x?.conditions?.add?.pattern,
             Url = x?.action.url
         });
-        return s.ToList();
+        return rules.ToList();
     }
 
     public List<string> GetPatternRegex()
