@@ -5,14 +5,18 @@
 
       <mat-form-field class="example-full-width" appearance="fill">
         <input matInput placeholder="Username"  formControlName="username" required>
+        <mat-error *ngIf="usernameControl.hasError('required')">Username required</mat-error>
       </mat-form-field>
 
       <mat-form-field class="example-full-width" appearance="fill">
         <input matInput type="password" placeholder="Password"  formControlName="password" required>
+        <mat-error *ngIf="passwordControl.hasError('required')">Password required</mat-error>
       </mat-form-field>
+<!-- <mat-error *ngIf="loginValid ==false">Invalid user</mat-error> -->
 
       <button mat-raised-button color="primary" type="submit">Login</button>
 
   </mat-card-content>
 </mat-card>
+
 </form>

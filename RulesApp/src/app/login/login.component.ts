@@ -5,11 +5,13 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import * as alertify from 'alertifyjs';
 import { Login } from '../Models/LoginModel';
 import { apiService } from '../shared/apiService.service';
+import { RulesListComponent } from '../rules-list/rules-list.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -17,18 +19,13 @@ import { apiService } from '../shared/apiService.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  constructor(
+    private api: apiService,
+    private builder: FormBuilder,
+    private _router: Router
+  ) {}
 
-  // public loginValid = true;
-  // public username = '';
-  // public password = '';
-
-  // private _destroySub$ = new Subject<void>();
-  // private readonly returnUrl: string;
-
-  constructor(private api: apiService, private builder: FormBuilder, private _router: Router)
-   {}
-
-   ngOnInit(): void { }
+  ngOnInit(): void {}
 
   usernameControl = new FormControl('', [Validators.required]);
   passwordControl = new FormControl('', [Validators.required]);
@@ -49,10 +46,18 @@ export class LoginComponent implements OnInit {
 
       this.api.Login(user).subscribe(
         (response) => {
-          alertify.success('Logging in succesfully');
+          // console.log(response)
+          if (response.message == 'Login done successfully') {
+            alertify.success('Logging in succesfully');
+            this._router.navigateByUrl('/list');
+          } else {
+            alertify.warning('Invalid user');
+            this.userForm.get('username')?.setValue('');
+            this.userForm.get('password')?.setValue('');
+          }
         },
         (error) => {
-          alertify.warning('logging failed');
+          alertify.warning('Server error');
         }
       );
     }
