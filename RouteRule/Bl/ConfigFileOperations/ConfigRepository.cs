@@ -3,6 +3,7 @@ using RouteRule.Bl.Helpers;
 using RouteRule.Models;
 using System.Xml.Linq;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 
 namespace RouteRule.Bl.ConfigFileOperations;
 
@@ -16,6 +17,7 @@ public class ConfigRepository : IConfigRepository
         _ruleHelper = ruleHelper;
         _iisApplication = iisOptions.Value;
     }
+
     public async Task<List<configurationSystemwebServerRewriteRule>> MapXmlToRules(string filePath)
     {
         var rules = new List<configurationSystemwebServerRewriteRule>();
@@ -38,7 +40,7 @@ public class ConfigRepository : IConfigRepository
 
     public async Task<bool> AppendRuleToConfigFile(Rule rule, string filePath)
     {
-        if (!IsArchivingDone(filePath, rule.Name)) return false;
+        if (!IsArchivingDone(filePath, rule.Name,"append")) return false;
 
         await Task.Run(() =>
         {
@@ -64,7 +66,7 @@ public class ConfigRepository : IConfigRepository
         if (!_ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)))
             return false;
 
-        if (!IsArchivingDone(filePath, rule.Name)) return false;
+        if (!IsArchivingDone(filePath, rule.Name,"remove")) return false;
 
         await Task.Run(() =>
         {
@@ -92,53 +94,52 @@ public class ConfigRepository : IConfigRepository
         return !_ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); //if rule doesn't exist that means the delete done successfully 
     }
 
-    private bool IsArchivingDone(string filePath, string ruleName)
+    public bool IsArchivingDone(string filePath, string ruleName, string action)
     {
-        var archiveFolder = ArchivingProcess(ruleName);
+        var archiveFolder = ArchivingProcess(_iisApplication.FolderPath,ruleName, action);
 
         if(!string.IsNullOrEmpty(archiveFolder)) 
             return CopyOldConfigToArchive(filePath, archiveFolder);
         
         return false;
-
     }
-
-    private static bool CreateArchiveFolder(string dir)
+     
+    public bool CreateArchiveFolder(string dir)
     {
         var directoryInfo = Directory.CreateDirectory(dir);
         return directoryInfo.Exists;
     }
-
-    private static string CreateArchiveTimeStampFolder(string dir, string ruleName)
+     
+    public string CreateArchiveTimeStampFolder(string dir, string ruleName, string action)
     {
-        var path = dir + "/" + DateTime.Today.ToShortDateString().Replace('/', '-') + "#" + Guid.NewGuid() + "#" + ruleName;
+        var path = dir + "/" + "#" + DateTime.Now.ToString(CultureInfo.CurrentCulture).Replace('/', '-').Replace(':', '%') + "#" + ruleName + "#" +  action;
         Directory.CreateDirectory(path);
         return path;
     }
-
-    private static bool CopyOldConfigToArchive(string oldDir, string newDir)
+     
+    public bool CopyOldConfigToArchive(string oldDir, string newDir)
     {
         File.Copy(oldDir, newDir + "/" + Path.GetFileName(oldDir));
         return IsFolderExist(newDir); 
     }
-
-    private static bool IsFolderExist(string dir)
+     
+    public bool IsFolderExist(string dir)
     {
         return Directory.Exists(dir);
     }
-
-    private string ArchivingProcess(string ruleName) 
+     
+    public string ArchivingProcess(string folderPath, string ruleName, string action) 
     {
         var archiveTimeStampFolderPath = "";
         try
         {
-            var archiveFolder = _iisApplication.FolderPath + "/archive";
+            var archiveFolder = folderPath + "/archive";
             if (IsFolderExist(archiveFolder))
-                archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder, ruleName);
+                archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder, ruleName, action);
             else
             {
                 var isCreated = CreateArchiveFolder(archiveFolder);
-                if(isCreated) archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder, ruleName);
+                if(isCreated) archiveTimeStampFolderPath = CreateArchiveTimeStampFolder(archiveFolder, ruleName, action);
             }
         }
         catch (Exception e)
@@ -146,6 +147,12 @@ public class ConfigRepository : IConfigRepository
             Console.WriteLine(e);
         }
         return archiveTimeStampFolderPath;
+    }
+
+    public bool DeleteConfig(string dir)
+    {
+        File.Delete(dir);
+        return !IsFolderExist(dir);
     }
 }
 
