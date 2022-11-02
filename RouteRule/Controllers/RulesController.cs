@@ -25,10 +25,10 @@ namespace RouteRule.Controllers
             _iisApplication = iisApplicationOptions.Value;
         }
         
-        [HttpGet(Name = "GetAllRules")]
+        [HttpGet(Name = "Rules")]
         [ProducesResponseType(typeof(IList<Rule>),(int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Enumerable),(int)HttpStatusCode.NoContent)]
-        public async Task<IList<Rule>> Get()
+        public async Task<IList<Rule>> Rules()
         {
             return await _ruleRepository.GetAllRules();
         }
@@ -122,6 +122,14 @@ namespace RouteRule.Controllers
         public bool RollBack(string archivePath)
         {
             return _archiveRepository.RollBack(archivePath);
+        }
+        [HttpGet]
+        [Route("Rules")]
+        [ProducesResponseType(typeof(List<Rule>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Enumerable), (int)HttpStatusCode.NoContent)]
+        public async Task<IList<Rule>> GetRules(string configPath)
+        {
+            return await _archiveRepository.GetAllRules(configPath);
         }
     }
 }

@@ -47,5 +47,16 @@ public class ArchiveRepository : IArchiveRepository
                _configRepository.DeleteConfig(_iisApplication.ConfigurationFilePath) &&
                _configRepository.CopyOldConfigToArchive(archivePath, _iisApplication.FolderPath); 
     }
+    public async Task<IList<Rule>> GetAllRules(string configPath)
+    {
+        var res = await _configRepository.MapXmlToRules(configPath);
+        var rules = res.Select(x => new Rule()
+        {
+            Name = x?.name,
+            Pattern = x?.conditions?.add?.pattern,
+            Url = x?.action.url
+        });
+        return rules.ToList();
+    }
 }
 
