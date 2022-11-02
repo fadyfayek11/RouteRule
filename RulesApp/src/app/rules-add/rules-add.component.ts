@@ -1,18 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ɵInjectableAnimationEngine } from '@angular/platform-browser/animations';
 import { apiService } from '../shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RuleModel } from '../Models/RuleModel';
-import { concat, elementAt } from 'rxjs';
 import { forbiddenPrefixValidator } from '../shared/forbidden-name.directive';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-rules-add',
   templateUrl: './rules-add.component.html',
   styleUrls: ['./rules-add.component.css'],
 })
+
+
 export class RulesAddComponent implements OnInit {
   constructor(
     private builder: FormBuilder,

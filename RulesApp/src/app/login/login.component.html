@@ -1,25 +1,22 @@
-<div fxLayoutAlign="center center" fxFlexFill class="main-div">
-  <mat-card fxFlex="25">
-    <form fxLayoutAlign="stretch" fxLayout="column" class="main-form">
-      <mat-card-content>
+<form class="example-form" (ngSubmit)="Submit()" [formGroup]="userForm" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card class="mat-elevation-z6">
+    <mat-card-content>
+     <mat-toolbar color="primary" class="tool">Login page</mat-toolbar>
 
-        <mat-toolbar color="primary">Login Page</mat-toolbar>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput placeholder="Username"  formControlName="username" required>
+        <mat-error *ngIf="usernameControl.hasError('required')">Username required</mat-error>
+      </mat-form-field>
 
-        <mat-form-field>
-          <input type="text" matInput placeholder="Username" formControlName="username">
-        </mat-form-field>
-        <mat-error *ngIf="usernameControl.hasError('required')">Empty</mat-error>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <input matInput type="password" placeholder="Password"  formControlName="password" required>
+        <mat-error *ngIf="passwordControl.hasError('required')">Password required</mat-error>
+      </mat-form-field>
+<!-- <mat-error *ngIf="loginValid ==false">Invalid user</mat-error> -->
 
-        <mat-form-field>
-          <input type="password" matInput placeholder="Password" formControlName="password">
-        </mat-form-field>
-        <mat-error *ngIf="passwordControl.hasError('required')">Empty</mat-error>
+      <button mat-raised-button color="primary" type="submit">Login</button>
 
-        <div class="button">
-          <button mat-raised-button type="submit" color="primary">Login</button>
-        </div>
+  </mat-card-content>
+</mat-card>
 
-      </mat-card-content>
-    </form>
-  </mat-card>
-</div>
+</form>

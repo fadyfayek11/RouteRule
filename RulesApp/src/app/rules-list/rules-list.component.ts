@@ -63,10 +63,10 @@ export class RulesListComponent implements OnInit {
   LoadPartenerRules(path: string) {
     //console.log(path)
     this.api.FilePathSet(path).subscribe(
-      (res) => {
+      () => {
         this.LoadRules();
       },
-      (error) => {
+      () => {
         alertify.warning('Site not available');
       }
     );
