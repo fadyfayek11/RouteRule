@@ -16,7 +16,7 @@ export class apiService {
   apiUrl = 'https://localhost:7046/Api/Rules';
   regexUrl = 'https://localhost:7046/Api/Rules/Regex';
   sitesUrl = 'https://localhost:7046/Api/Rules/RouteApps';
-  pathUrl = 'https://localhost:7046/Api/Rules/ConfigFilePath';
+  pathUrl = 'https://localhost:7046/Api/Rules/ApplicationPath';
   loginUrl="https://localhost:7046/Api/Rules/Login"
 
   GetallRules(): Observable<RuleModel[]> {
@@ -54,10 +54,17 @@ export class apiService {
     return this.http.get<any[]>(this.sitesUrl);
   }
 
-  FilePathSet(site: string) {
-    const params = new HttpParams().set('filePath', site);
+  FilePathSet(siteName : string,ConfigFilePath:string,folderPath :string) {
+    //const params = new HttpParams().set('filePath', site);
 
-    return this.http.post(this.pathUrl, '', { params: params });
+     let body = {
+        name :siteName,
+        configurationFilePath : ConfigFilePath,
+        folderPath:folderPath
+      }
+
+
+    return this.http.post(this.pathUrl,body);
   }
 
 

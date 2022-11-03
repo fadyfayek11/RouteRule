@@ -2,18 +2,16 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { apiService } from '../shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RuleModel } from '../Models/RuleModel';
-import { forbiddenPrefixValidator } from '../shared/forbidden-name.directive';
+import { forbiddenNameValidator } from '../shared/forbidden-name.directive';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
+import { forbiddenPatternValidator } from '../shared/forbidden-pattern.directive copy';
 
 @Component({
   selector: 'app-rules-add',
   templateUrl: './rules-add.component.html',
   styleUrls: ['./rules-add.component.css'],
 })
-
-
 export class RulesAddComponent implements OnInit {
   constructor(
     private builder: FormBuilder,
@@ -23,28 +21,33 @@ export class RulesAddComponent implements OnInit {
   ) {}
 
   regexs: string[] = [];
-  prefixes: string[] = [];
-  names:string[]=[]
+  patterns: string[] = [];
+  names: string[] = [];
+  repeatedPattern: boolean = false;
 
   ngOnInit(): void {
     this.LoadRegex();
-    this.LoadPrefixes_names();
-    //console.log(this.data)
-    //console.log(this.prefixes)
-    //console.log(this.names);
+    this.LoadPatterns_names();
+    // console.log(this.data)
+    // console.log(this.patterns)
+    // console.log(this.names);
   }
 
-  prefixControl = new FormControl('', [
+  NameControl = new FormControl('', [
     Validators.required,
-    forbiddenPrefixValidator(this.prefixes),
+    forbiddenNameValidator(this.names),
   ]);
   regexControl = new FormControl('', Validators.required);
+  prefixControl = new FormControl('', Validators.required);
+  hiddenChecker = new FormControl('',forbiddenPatternValidator(this.patterns))
+  urlControl = new FormControl('', Validators.required);
 
   ruleForm = this.builder.group({
-    name: this.builder.control('', Validators.required),
+    name: this.NameControl,
     prefix: this.prefixControl,
     regex: this.regexControl,
-    url: this.builder.control('', Validators.required),
+    patternChecker :this.hiddenChecker,
+    url: this.urlControl,
     // isactive: this.builder.control(true),
   });
 
@@ -52,8 +55,13 @@ export class RulesAddComponent implements OnInit {
     if (this.ruleForm.valid) {
       let newRule: RuleModel = {
         name: this.ruleForm.get('name')?.value!,
-        pattern:"(.*)"+"(couponNumber="+this.ruleForm
-          .get('prefix')?.value!+")"+this.ruleForm.get('regex')?.value!+"(.*)",
+        pattern:
+          '(.*)' +
+          '(couponNumber=' +
+          this.ruleForm.get('prefix')?.value! +
+          ')' +
+          this.ruleForm.get('regex')?.value! +
+          '(.*)',
         url: this.ruleForm.get('url')?.value!,
       };
       //console.log(newRule);
@@ -80,13 +88,27 @@ export class RulesAddComponent implements OnInit {
     });
   }
 
-  LoadPrefixes_names() {
-    this.data.allRules.filteredData.map((element: RuleModel) => {
-      this.prefixes.push(element.pattern?.substring(18, 21));
+  LoadPatterns_names() {
+    this.data.allRules.map((element: RuleModel) => {
+      this.patterns.push(element.pattern);
     });
 
-    this.data.allRules.filteredData.map((element: RuleModel) => {
+    this.data.allRules.map((element: RuleModel) => {
       this.names.push(element.name);
     });
   }
+
+    checkPatternUniqueness(event :any) {
+    let inputPattern =
+      '(.*)' +
+      '(couponNumber=' +
+      this.ruleForm.get('prefix')?.value! +
+      ')' +
+      this.ruleForm.get('regex')?.value! +
+      '(.*)';
+
+     // console.log(inputPattern)
+      this.ruleForm.patchValue({patternChecker:inputPattern})
+  }
 }
+

@@ -37,7 +37,7 @@ export class RulesListComponent implements OnInit {
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
       data: {
-        allRules: this.finalData
+        allRules: this.dataSource
       },
     });
     _popup.afterClosed().subscribe((res) => {
@@ -45,13 +45,13 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-  openEditPopup(rule: any) {
+  openEditPopup(rule: RuleModel) {
     const _popup = this.dialog.open(RulesEditComponent, {
       width: '600px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
       data: {
-        allRules: this.finalData,
+        allRules: this.dataSource,
         oldRule:rule
       },
     });
@@ -60,13 +60,13 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-  LoadPartenerRules(path: string) {
+  LoadPartenerRules(name: string,configPath : string,folderPath:string) {
     //console.log(path)
-    this.api.FilePathSet(path).subscribe(
-      () => {
+    this.api.FilePathSet(name,configPath,folderPath).subscribe(
+      (res) => {
         this.LoadRules();
       },
-      () => {
+      (res) => {
         alertify.warning('Site not available');
       }
     );

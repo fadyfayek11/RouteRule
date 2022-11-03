@@ -5,32 +5,25 @@
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput placeholder="Name" formControlName="name" />
+        <mat-error *ngIf="NameControl.hasError('forbiddenName')"> Please enter nonrepeated name</mat-error>
+        <mat-error *ngIf="NameControl.hasError('required')">Name couldn't be empty</mat-error>
       </mat-form-field>
 
-      <mat-form-field id="prefixStyle" appearance="fill" mar>
-        <mat-label>Prefix</mat-label>
-        <input matInput placeholder="Enter a unique prefix" formControlName="prefix" />
-        <mat-error *ngIf="prefixControl.hasError('forbiddenPrefix')"> Please enter a unique prefix </mat-error>
-        <mat-error *ngIf="prefixControl.hasError('required')">Empty</mat-error>
-      </mat-form-field>
-
-      <mat-form-field id="regexStyle" appearance="fill">
-        <mat-label>Regex</mat-label>
-        <mat-select formControlName="regex" required>
-          <mat-option>--</mat-option>
-          <mat-option *ngFor="let reg of regexs" [value]="reg">
-            {{reg}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="regexControl.hasError('required')"> Please choose a regex first </mat-error>
-        <mat-hint></mat-hint>
+      <mat-form-field class="example-full-width" appearance="fill" mar>
+        <mat-label>Pattern</mat-label>
+        <input matInput placeholder="Enter a unique pattern" formControlName="pattern" />
+        <mat-error *ngIf="patternControl.hasError('forbiddenPattern')"> Pattern shouldn't be repeated between rules</mat-error>
+        <mat-error *ngIf="patternControl.hasError('required')">Please insert a value</mat-error>
       </mat-form-field>
 
 
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>URL</mat-label>
         <input matInput placeholder="URL" formControlName="url" />
+        <mat-error *ngIf="urlControl.hasError('required')">Url couldn't be empty</mat-error>
       </mat-form-field>
+
+
     </mat-card-content>
     <mat-card-footer>
       <div class="example-button-row" style="margin: 2px">

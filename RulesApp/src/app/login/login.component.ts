@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
         UserName: this.userForm.get('username')?.value!,
         Password: this.userForm.get('password')?.value!,
       };
-      console.log(user);
+      //console.log(user);
 
       this.api.Login(user).subscribe(
         (response) => {
