@@ -1,7 +1,7 @@
 <div class="mat-elevation">
-  <mat-form-field appearance="fill" class="btn-group">
+  <mat-form-field appearance="fill" class="btn-group" style="width: 500px; background-color:transparent;border-radius: 3px;">
     <mat-label>Main partner</mat-label>
-    <mat-select class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+    <mat-select class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:'primary';">
       <mat-option *ngFor="let partener of MainSites" [value]="partener" (onSelectionChange)="LoadPartenerRules(partener.name,partener.configurationFilePath,partener.folderPath)">
         {{ partener.name }}
       </mat-option>

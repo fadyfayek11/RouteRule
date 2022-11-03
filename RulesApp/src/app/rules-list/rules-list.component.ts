@@ -31,7 +31,7 @@ export class RulesListComponent implements OnInit {
   ngOnInit(): void {
     this.LoadRules();
     this.LoadMainSites();
-    console.log(this.MainSites)
+    //console.log(this.MainSites)
   }
 
   openAddPopup() {

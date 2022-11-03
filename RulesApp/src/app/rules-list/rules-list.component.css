@@ -8,3 +8,13 @@
 }
 
 
+#select {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 1em;
+  height: 4em;
+  opacity: 0;
+  background: none transparent;
+  border: 0 none;
+}
