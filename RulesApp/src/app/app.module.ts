@@ -12,6 +12,8 @@ import {HttpClientModule} from '@angular/common/http';
 import { RulesEditComponent } from './rules-edit/rules-edit.component';
 import { LoginComponent } from './login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ArchiveHistoryComponent } from './archive-history/archive-history.component';
+import { ArchiveDetailsComponent } from './archive-details/archive-details.component';
 
 
 
@@ -22,7 +24,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     RulesListComponent,
     RulesAddComponent,
     RulesEditComponent,
-    LoginComponent
+    LoginComponent,
+    ArchiveHistoryComponent,
+    ArchiveDetailsComponent
   ],
   imports: [
     BrowserModule,

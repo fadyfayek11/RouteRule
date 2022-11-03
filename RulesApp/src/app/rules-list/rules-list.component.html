@@ -1,8 +1,8 @@
 <div class="mat-elevation">
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" class="btn-group">
     <mat-label>Main partner</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let partener of MainSites" [value]="partener.value" (onSelectionChange)="LoadPartenerRules(partener.name,partener.configurationFilePath,partener.folderPath)">
+    <mat-select class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+      <mat-option *ngFor="let partener of MainSites" [value]="partener" (onSelectionChange)="LoadPartenerRules(partener.name,partener.configurationFilePath,partener.folderPath)">
         {{ partener.name }}
       </mat-option>
     </mat-select>
@@ -12,7 +12,11 @@
 <div class="mat-elevation-z8">
   <div>
     <a mat-raised-button color="primary" routerLink="create" (click)="openAddPopup()" style="margin: 2%">Create New rule </a>
+    <a mat-raised-button color="primary" class="history" routerLink="create" (click)="displayHistory()" style="margin: 2%">Site history</a>
   </div>
+
+
+
 
   <table mat-table [dataSource]="finalData" matSort class="mat-elevation-z8">
     <!-- Name Column -->
