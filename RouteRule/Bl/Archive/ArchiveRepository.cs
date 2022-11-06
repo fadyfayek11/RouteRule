@@ -7,10 +7,12 @@ namespace RouteRule.Bl.Archive;
 
 public class ArchiveRepository : IArchiveRepository
 {
+    private readonly ILogger<ArchiveRepository> _logger;
     private readonly IConfigRepository _configRepository;
     private readonly IISApplication _iisApplication;
-    public ArchiveRepository(IConfigRepository configRepository,IOptions<IISApplication> iisOptions)
+    public ArchiveRepository(ILogger<ArchiveRepository> logger,IConfigRepository configRepository,IOptions<IISApplication> iisOptions)
     {
+        _logger = logger;
         _configRepository = configRepository;
         _iisApplication = iisOptions.Value;
     }
@@ -36,7 +38,7 @@ public class ArchiveRepository : IArchiveRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e.ToString());
         }
        
         return archive;
