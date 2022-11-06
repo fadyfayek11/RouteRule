@@ -43,7 +43,7 @@ public class ArchiveRepository : IArchiveRepository
     }
     public bool RollBack(string archivePath)
     {
-        return _configRepository.IsArchivingDone(_iisApplication.ConfigurationFilePath, "before", "rolleback") &&
+        return _configRepository.IsArchivingDone(_iisApplication.ConfigurationFilePath, "before", "rollback") &&
                _configRepository.DeleteConfig(_iisApplication.ConfigurationFilePath) &&
                _configRepository.CopyOldConfigToArchive(archivePath, _iisApplication.FolderPath); 
     }
