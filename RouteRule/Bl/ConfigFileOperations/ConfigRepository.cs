@@ -104,7 +104,7 @@ public class ConfigRepository : IConfigRepository
         return false;
     }
      
-    public bool CreateArchiveFolder(string dir)
+    private static bool CreateArchiveFolder(string dir)
     {
         var directoryInfo = Directory.CreateDirectory(dir);
         return directoryInfo.Exists;
@@ -128,7 +128,7 @@ public class ConfigRepository : IConfigRepository
         return Directory.Exists(dir);
     }
      
-    public string ArchivingProcess(string folderPath, string ruleName, string action) 
+    private string ArchivingProcess(string folderPath, string ruleName, string action) 
     {
         var archiveTimeStampFolderPath = "";
         try

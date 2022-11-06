@@ -14,7 +14,7 @@ public class RuleHelperRepository : IRuleHelperRepository
     {
         return rules.Any(x =>
             x.name == rule.Name &&
-            x.conditions.add.pattern == rule.Pattern &&
+            x.conditions?.add?.pattern == rule.Pattern  &&
             x.action.url.Split('{')[0] == rule.Url+'/');
     }
 
