@@ -8,6 +8,8 @@ import { RulesEditComponent } from '../rules-edit/rules-edit.component';
 import * as alertify from 'alertifyjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
+import { SiteModel } from '../Models/SiteModel';
 
 const ELEMENT_DATA: RuleModel[] = [];
 
@@ -17,18 +19,19 @@ const ELEMENT_DATA: RuleModel[] = [];
   styleUrls: ['./rules-list.component.css'],
 })
 export class RulesListComponent implements OnInit {
-  constructor(private dialog: MatDialog, private api: apiService) {}
+  constructor(private dialog: MatDialog, private api: apiService,private _router:Router) {}
   @ViewChild(MatPaginator) _paginator!: MatPaginator;
   @ViewChild(MatSort) _sort!: MatSort;
 
   displayedColCumns: string[] = ['name', 'url', 'action'];
   dataSource = ELEMENT_DATA;
   finalData: any;
-  MainSites: any[] = [];
+  MainSites: SiteModel[] = [];
 
   ngOnInit(): void {
     this.LoadRules();
     this.LoadMainSites();
+    //console.log(this.MainSites)
   }
 
   openAddPopup() {
@@ -113,5 +116,11 @@ export class RulesListComponent implements OnInit {
     this.api.GetMainSites().subscribe((res) => {
       this.MainSites = res;
     });
+  }
+
+
+  displayHistory()
+  {
+    this._router.navigateByUrl('History')
   }
 }
