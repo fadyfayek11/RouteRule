@@ -4,8 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { RuleModel } from '../Models/RuleModel';
-import { apiService } from '../shared/apiService.service';
+import { RuleModel } from '../../Models/RuleModel';
+import { apiService } from '../../shared/services/apiService.service';
 
 
 

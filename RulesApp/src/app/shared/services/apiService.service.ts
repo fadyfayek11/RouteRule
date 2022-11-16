@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { RuleModel } from '../Models/RuleModel';
-import * as e from 'cors';
+import { RuleModel } from '../../Models/RuleModel';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Login } from '../Models/LoginModel';
-import { ArchiveModel } from '../Models/ArchiveModel';
-import { SiteModel } from '../Models/SiteModel';
+import { Login } from '../../Models/LoginModel';
+import { ArchiveModel } from '../../Models/ArchiveModel';
+import { SiteModel } from '../../Models/SiteModel';
 
 @Injectable({
   providedIn: 'root',

@@ -8,8 +8,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import * as alertify from 'alertifyjs';
-import { Login } from '../Models/LoginModel';
-import { apiService } from '../shared/apiService.service';
+import { Login } from 'src/app/Models/LoginModel';
+import { apiService } from '../../shared/services/apiService.service';
 import { RulesListComponent } from '../rules-list/rules-list.component';
 import { MatDialog } from '@angular/material/dialog';
 

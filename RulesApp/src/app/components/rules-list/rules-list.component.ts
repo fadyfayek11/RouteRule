@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RuleModel } from '../Models/RuleModel';
+import { RuleModel } from '../../Models/RuleModel';
 import { MatTableDataSource } from '@angular/material/table';
 import { RulesAddComponent } from '../rules-add/rules-add.component';
-import { apiService } from '../shared/apiService.service';
+import { apiService } from '../../shared/services/apiService.service';
 import { RulesEditComponent } from '../rules-edit/rules-edit.component';
 import * as alertify from 'alertifyjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { SiteModel } from '../Models/SiteModel';
+import { SiteModel } from '../../Models/SiteModel';
 
 const ELEMENT_DATA: RuleModel[] = [];
 

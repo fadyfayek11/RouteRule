@@ -3,13 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { RuleModel } from '../Models/RuleModel';
+import { RuleModel } from '../../Models/RuleModel';
+import { apiService } from '../../shared/services/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RulesAddComponent } from '../rules-add/rules-add.component';
 import { RulesEditComponent } from '../rules-edit/rules-edit.component';
-import { apiService } from '../shared/apiService.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { ArchiveModel } from '../Models/ArchiveModel';
+import { ArchiveModel } from '../../Models/ArchiveModel';
 import { ArchiveDetailsComponent } from '../archive-details/archive-details.component';
 
 const ELEMENT_DATA: ArchiveModel[] = [];
