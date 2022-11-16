@@ -7,10 +7,12 @@ namespace RouteRule.Bl.Archive;
 
 public class ArchiveRepository : IArchiveRepository
 {
+    private readonly ILogger<ArchiveRepository> _logger;
     private readonly IConfigRepository _configRepository;
     private readonly IISApplication _iisApplication;
-    public ArchiveRepository(IConfigRepository configRepository,IOptions<IISApplication> iisOptions)
+    public ArchiveRepository(ILogger<ArchiveRepository> logger,IConfigRepository configRepository,IOptions<IISApplication> iisOptions)
     {
+        _logger = logger;
         _configRepository = configRepository;
         _iisApplication = iisOptions.Value;
     }
@@ -36,14 +38,14 @@ public class ArchiveRepository : IArchiveRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e.ToString());
         }
        
         return archive;
     }
     public bool RollBack(string archivePath)
     {
-        return _configRepository.IsArchivingDone(_iisApplication.ConfigurationFilePath, "before", "rolleback") &&
+        return _configRepository.IsArchivingDone(_iisApplication.ConfigurationFilePath, "before", "rollback") &&
                _configRepository.DeleteConfig(_iisApplication.ConfigurationFilePath) &&
                _configRepository.CopyOldConfigToArchive(archivePath, _iisApplication.FolderPath); 
     }

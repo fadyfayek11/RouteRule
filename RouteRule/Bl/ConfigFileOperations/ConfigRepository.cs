@@ -9,11 +9,13 @@ namespace RouteRule.Bl.ConfigFileOperations;
 
 public class ConfigRepository : IConfigRepository
 {
+    private readonly ILogger<ConfigRepository> _logger;
     private readonly IRuleHelperRepository _ruleHelper;
     private readonly IISApplication _iisApplication;
 
-    public ConfigRepository(IOptions<IISApplication> iisOptions,IRuleHelperRepository ruleHelper)
+    public ConfigRepository(ILogger<ConfigRepository> logger,IOptions<IISApplication> iisOptions,IRuleHelperRepository ruleHelper)
     {
+        _logger = logger;
         _ruleHelper = ruleHelper;
         _iisApplication = iisOptions.Value;
     }
@@ -31,8 +33,8 @@ public class ConfigRepository : IConfigRepository
                 rules = rulesConfiguration.systemwebServer.rewrite.rules.ToList();
             }
             catch (Exception e)
-            {
-                Console.WriteLine(e);
+            { 
+                _logger.LogError(e.ToString());
             }
         });
         return rules;
@@ -55,7 +57,7 @@ public class ConfigRepository : IConfigRepository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogError(e.ToString());
             }
         });
         return _ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); // in case append done.
@@ -88,7 +90,7 @@ public class ConfigRepository : IConfigRepository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogError(e.ToString());
             }
         });
         return !_ruleHelper.IsRuleExist(rule, await MapXmlToRules(filePath)); //if rule doesn't exist that means the delete done successfully 
@@ -144,7 +146,7 @@ public class ConfigRepository : IConfigRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e.ToString());
         }
         return archiveTimeStampFolderPath;
     }

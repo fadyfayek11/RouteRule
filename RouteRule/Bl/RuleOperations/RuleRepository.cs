@@ -8,13 +8,15 @@ namespace RouteRule.Bl.RuleOperations;
 
 public class RuleRepository : IRuleRepository
 {
+    private readonly ILogger<RuleRepository> _logger;
     private readonly IConfiguration _configuration;
     private readonly IConfigRepository _configFile;
     private readonly IISApplication _iisApplication;
     private readonly IRuleHelperRepository _ruleHelper;
 
-    public RuleRepository(IConfiguration configuration,IOptions<IISApplication> iisAppOptions, IConfigRepository configFile, IRuleHelperRepository ruleHelper)
+    public RuleRepository(ILogger<RuleRepository> logger,IConfiguration configuration,IOptions<IISApplication> iisAppOptions, IConfigRepository configFile, IRuleHelperRepository ruleHelper)
     {
+         _logger = logger;
         _configuration = configuration;
         _configFile = configFile;
         _ruleHelper = ruleHelper;
@@ -83,12 +85,12 @@ public class RuleRepository : IRuleRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e.ToString());
         }
 
         return apps;
     }
-    private static bool IsRouteApp(string folderPath,out string fileName)
+    private bool IsRouteApp(string folderPath,out string fileName)
     {
         try
         {
@@ -103,7 +105,7 @@ public class RuleRepository : IRuleRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e.ToString());
         }
         fileName = "";
         return false;
