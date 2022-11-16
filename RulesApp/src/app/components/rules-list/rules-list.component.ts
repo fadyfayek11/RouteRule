@@ -7,7 +7,7 @@ import { apiService } from '../../shared/services/apiService.service';
 import { RulesEditComponent } from '../rules-edit/rules-edit.component';
 import * as alertify from 'alertifyjs';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { SiteModel } from '../../Models/SiteModel';
 
@@ -19,7 +19,12 @@ const ELEMENT_DATA: RuleModel[] = [];
   styleUrls: ['./rules-list.component.css'],
 })
 export class RulesListComponent implements OnInit {
-  constructor(private dialog: MatDialog, private api: apiService,private _router:Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private api: apiService,
+    private _router: Router,
+
+  ) {}
   @ViewChild(MatPaginator) _paginator!: MatPaginator;
   @ViewChild(MatSort) _sort!: MatSort;
 
@@ -40,7 +45,7 @@ export class RulesListComponent implements OnInit {
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
       data: {
-        allRules: this.dataSource
+        allRules: this.dataSource,
       },
     });
     _popup.afterClosed().subscribe((res) => {
@@ -55,7 +60,7 @@ export class RulesListComponent implements OnInit {
       enterAnimationDuration: '1000ms',
       data: {
         allRules: this.dataSource,
-        oldRule:rule
+        oldRule: rule,
       },
     });
     _popup.afterClosed().subscribe((res) => {
@@ -63,9 +68,9 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-  LoadPartenerRules(name: string,configPath : string,folderPath:string) {
+  LoadPartenerRules(name: string, configPath: string, folderPath: string) {
     //console.log(path)
-    this.api.FilePathSet(name,configPath,folderPath).subscribe(
+    this.api.FilePathSet(name, configPath, folderPath).subscribe(
       (res) => {
         this.LoadRules();
       },
@@ -88,7 +93,7 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-  editRule(rule :any) {
+  editRule(rule: any) {
     this.openEditPopup(rule);
   }
 
@@ -118,9 +123,8 @@ export class RulesListComponent implements OnInit {
     });
   }
 
-
-  displayHistory()
-  {
-    this._router.navigateByUrl('History')
+  displayHistory() {
+    this._router.navigateByUrl('History');
   }
+
 }

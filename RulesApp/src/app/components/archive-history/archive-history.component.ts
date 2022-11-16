@@ -1,16 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { RuleModel } from '../../Models/RuleModel';
 import { apiService } from '../../shared/services/apiService.service';
 import * as alertify from 'alertifyjs';
-import { RulesAddComponent } from '../rules-add/rules-add.component';
-import { RulesEditComponent } from '../rules-edit/rules-edit.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ArchiveModel } from '../../Models/ArchiveModel';
 import { ArchiveDetailsComponent } from '../archive-details/archive-details.component';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 const ELEMENT_DATA: ArchiveModel[] = [];
 
@@ -23,7 +21,8 @@ export class ArchiveHistoryComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private api: apiService,
-    private _router: Router
+    private _router: Router,
+    private _liveannouncer :LiveAnnouncer
   ) {}
   @ViewChild(MatPaginator) _paginator!: MatPaginator;
   @ViewChild(MatSort) _sort!: MatSort;
@@ -63,6 +62,12 @@ export class ArchiveHistoryComponent implements OnInit {
       this.finalData = new MatTableDataSource<ArchiveModel>(this.dataSource);
       this.finalData.paginator = this._paginator;
       this.finalData.sort = this._sort;
+      this.finalData.sortingDataAccessor = (item:any , property:any) => {
+        switch (property) {
+          case 'date': return new Date(item.date);
+          default: return item[property];
+        }
+      };
     });
   }
 
@@ -92,4 +97,5 @@ export class ArchiveHistoryComponent implements OnInit {
       function () {}
     );
   }
+
 }
