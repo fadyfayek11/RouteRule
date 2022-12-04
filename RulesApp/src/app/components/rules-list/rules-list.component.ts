@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RuleModel } from '../../Models/RuleModel';
 import { MatTableDataSource } from '@angular/material/table';
 import { RulesAddComponent } from '../rules-add/rules-add.component';
-import { apiService } from '../../shared/services/apiService.service';
+import { apiService } from '../../services/shared/apiService.service';
 import { RulesEditComponent } from '../rules-edit/rules-edit.component';
 import * as alertify from 'alertifyjs';
 import { MatPaginator } from '@angular/material/paginator';

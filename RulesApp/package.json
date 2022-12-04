@@ -24,6 +24,7 @@
     "alertifyjs": "^1.13.1",
     "bootstrap": "^5.2.2",
     "cors": "^2.8.5",
+    "jwt-decode": "^3.1.2",
     "primeicons": "^6.0.1",
     "primeng": "^14.1.2",
     "rxjs": "^7.5.7",

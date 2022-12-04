@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { apiService } from '../../shared/services/apiService.service';
+import { apiService } from '../../services/shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { ArchiveModel } from '../../Models/ArchiveModel';

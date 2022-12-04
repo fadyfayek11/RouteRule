@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { forbiddenNameValidator } from '../../shared/validators/forbidden-name.directive';
-import { apiService } from '../../shared/services/apiService.service';
+import { forbiddenNameValidator } from '../../utils/validators/forbidden-name.directive';
+import { apiService } from '../../services/shared/apiService.service';
 import * as alertify from 'alertifyjs';
 import { RuleModel } from '../../Models/RuleModel';
-import { forbiddenPatternValidator } from '../../shared/validators/forbidden-pattern.directive copy';
+import { forbiddenPatternValidator } from '../../utils/validators/forbidden-pattern.directive copy';
 
 @Component({
   selector: 'app-rules-edit',

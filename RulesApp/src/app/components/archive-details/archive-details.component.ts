@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { RuleModel } from '../../Models/RuleModel';
-import { apiService } from '../../shared/services/apiService.service';
+import { apiService } from '../../services/shared/apiService.service';
 
 
 
